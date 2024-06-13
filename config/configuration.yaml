@@ -7,6 +7,10 @@ homeassistant:
 
 # https://www.home-assistant.io/integrations/logger/
 logger:
-  default: info
+  default: warning
   logs:
-    custom_components.integration_blueprint: debug
+    custom_components.modbus_logo: debug
+
+debugpy:
+  start: true
+  wait: true
