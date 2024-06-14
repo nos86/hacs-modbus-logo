@@ -1,8 +1,3 @@
-"""Constants for integration_blueprint."""
+"""Constants for modbus_logo8!."""
 
-from logging import Logger, getLogger
-
-LOGGER: Logger = getLogger(__package__)
-
-DOMAIN = "integration_blueprint"
-ATTRIBUTION = "Data provided by http://jsonplaceholder.typicode.com/"
+DOMAIN = "modbus_logo"

@@ -1,57 +1,44 @@
-"""Sensor platform for integration_blueprint."""
+"""Support for Modbus Register sensors."""
 
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
-from homeassistant.components.sensor import SensorEntity, SensorEntityDescription
+from homeassistant.components.modbus.const import CONF_SLAVE_COUNT, CONF_VIRTUAL_COUNT
+from homeassistant.components.modbus.sensor import ModbusRegisterSensor, SlaveSensor
+from homeassistant.const import (
+    CONF_NAME,
+    CONF_SENSORS,
+)
 
-from .entity import IntegrationBlueprintEntity
+from . import get_hub
 
 if TYPE_CHECKING:
     from homeassistant.core import HomeAssistant
     from homeassistant.helpers.entity_platform import AddEntitiesCallback
+    from homeassistant.helpers.typing import ConfigType, DiscoveryInfoType
 
-    from .coordinator import BlueprintDataUpdateCoordinator
-    from .data import IntegrationBlueprintConfigEntry
-
-ENTITY_DESCRIPTIONS = (
-    SensorEntityDescription(
-        key="integration_blueprint",
-        name="Integration Sensor",
-        icon="mdi:format-quote-close",
-    ),
-)
+PARALLEL_UPDATES = 1
 
 
-async def async_setup_entry(
-    hass: HomeAssistant,  # noqa: ARG001 Unused function argument: `hass`
-    entry: IntegrationBlueprintConfigEntry,
+async def async_setup_platform(
+    hass: HomeAssistant,
+    config: ConfigType,  # noqa: ARG001
     async_add_entities: AddEntitiesCallback,
+    discovery_info: DiscoveryInfoType | None = None,
 ) -> None:
-    """Set up the sensor platform."""
-    async_add_entities(
-        IntegrationBlueprintSensor(
-            coordinator=entry.runtime_data.coordinator,
-            entity_description=entity_description,
+    """Set up the Modbus sensors."""
+    if discovery_info is None:
+        return
+
+    sensors: list[ModbusRegisterSensor | SlaveSensor] = []
+    hub = get_hub(hass, discovery_info[CONF_NAME])
+    for entry in discovery_info[CONF_SENSORS]:
+        slave_count = entry.get(CONF_SLAVE_COUNT, None) or entry.get(
+            CONF_VIRTUAL_COUNT, 0
         )
-        for entity_description in ENTITY_DESCRIPTIONS
-    )
-
-
-class IntegrationBlueprintSensor(IntegrationBlueprintEntity, SensorEntity):
-    """integration_blueprint Sensor class."""
-
-    def __init__(
-        self,
-        coordinator: BlueprintDataUpdateCoordinator,
-        entity_description: SensorEntityDescription,
-    ) -> None:
-        """Initialize the sensor class."""
-        super().__init__(coordinator)
-        self.entity_description = entity_description
-
-    @property
-    def native_value(self) -> str | None:
-        """Return the native value of the sensor."""
-        return self.coordinator.data.get("body")
+        sensor = ModbusRegisterSensor(hass, hub, entry, slave_count)
+        if slave_count > 0:
+            sensors.extend(await sensor.async_setup_slaves(hass, slave_count, entry))
+        sensors.append(sensor)
+    async_add_entities(sensors)

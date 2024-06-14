@@ -1,11 +1,12 @@
-"""Support for Modbus switches."""
+"""Support for Generic Modbus Thermostats."""
 
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
-from homeassistant.components.modbus.switch import ModbusSwitch
-from homeassistant.const import CONF_NAME, CONF_SWITCHES
+from homeassistant.components.modbus.climate import ModbusThermostat
+from homeassistant.components.modbus.const import CONF_CLIMATES
+from homeassistant.const import CONF_NAME
 
 from . import get_hub
 
@@ -25,12 +26,13 @@ async def async_setup_platform(
     async_add_entities: AddEntitiesCallback,
     discovery_info: DiscoveryInfoType | None = None,
 ) -> None:
-    """Read configuration and create Modbus switches."""
+    """Read configuration and create Modbus climate."""
     if discovery_info is None:
         return
 
-    switches = []
-    for entry in discovery_info[CONF_SWITCHES]:
+    entities = []
+    for entity in discovery_info[CONF_CLIMATES]:
         hub: ModbusHub = get_hub(hass, discovery_info[CONF_NAME])
-        switches.append(ModbusSwitch(hass, hub, entry))
-    async_add_entities(switches)
+        entities.append(ModbusThermostat(hass, hub, entity))
+
+    async_add_entities(entities)

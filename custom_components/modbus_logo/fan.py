@@ -1,11 +1,12 @@
-"""Support for Modbus switches."""
+"""Support for Modbus lights."""
 
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
-from homeassistant.components.modbus.switch import ModbusSwitch
-from homeassistant.const import CONF_NAME, CONF_SWITCHES
+from homeassistant.components.modbus.const import CONF_FANS
+from homeassistant.components.modbus.fan import ModbusFan
+from homeassistant.const import CONF_NAME
 
 from . import get_hub
 
@@ -25,12 +26,12 @@ async def async_setup_platform(
     async_add_entities: AddEntitiesCallback,
     discovery_info: DiscoveryInfoType | None = None,
 ) -> None:
-    """Read configuration and create Modbus switches."""
+    """Read configuration and create Modbus fans."""
     if discovery_info is None:
         return
+    fans = []
 
-    switches = []
-    for entry in discovery_info[CONF_SWITCHES]:
+    for entry in discovery_info[CONF_FANS]:
         hub: ModbusHub = get_hub(hass, discovery_info[CONF_NAME])
-        switches.append(ModbusSwitch(hass, hub, entry))
-    async_add_entities(switches)
+        fans.append(ModbusFan(hass, hub, entry))
+    async_add_entities(fans)
