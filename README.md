@@ -1,47 +1,60 @@
-# Notice
+[![hacs_badge](https://img.shields.io/badge/HACS-Custom-41BDF5.svg)](https://github.com/hacs/integration)
 
-The component and platforms in this repository are not meant to be used by a
-user, but as a "blueprint" that custom component developers can build
-upon, to make more awesome stuff.
+# Home Assistant Custom Integration: modbus_logo
 
-HAVE FUN! 😎
+[modbus](http://www.modbus.org/) is a communication protocol to control PLCs (Programmable Logic Controller) and RTUs (Remote Terminal Unit).
 
-## Why?
+The integration adheres to the [protocol specification](https://www.modbus.org/docs/Modbus_Application_Protocol_V1_1b3.pdf) using [pymodbus](https://github.com/pymodbus-dev/pymodbus) for the protocol implementation.
 
-This is simple, by having custom_components look (README + structure) the same
-it is easier for developers to help each other and for users to start using them.
+The modbus_logo *custom integration* supports all devices adhering to the modbus standard. The communication to the device/devices can be serial (rs-485), TCP, or UDP connections. The modbus integration allows multiple communication channels e.g. a serial port connection combined with one or more TCP connections.
 
-If you are a developer and you want to add things to this "blueprint" that you think more
-developers will have use for, please open a PR to add it :)
+This integration is built on top of official components in home-assistant and extend some functionality.
+Documentation of this integration is the same of the official [documentation](https://www.home-assistant.io/integrations/modbus/).
 
-## What?
+Continuing in the reading of this file you'll find the documentation for the added specific feature.
 
-This repository contains multiple files, here is a overview:
 
-File | Purpose | Documentation
--- | -- | --
-`.devcontainer.json` | Used for development/testing with Visual Studio Code. | [Documentation](https://code.visualstudio.com/docs/remote/containers)
-`.github/ISSUE_TEMPLATE/*.yml` | Templates for the issue tracker | [Documentation](https://help.github.com/en/github/building-a-strong-community/configuring-issue-templates-for-your-repository)
-`.vscode/tasks.json` | Tasks for the devcontainer. | [Documentation](https://code.visualstudio.com/docs/editor/tasks)
-`custom_components/integration_blueprint/*` | Integration files, this is where everything happens. | [Documentation](https://developers.home-assistant.io/docs/creating_component_index)
-`CONTRIBUTING.md` | Guidelines on how to contribute. | [Documentation](https://help.github.com/en/github/building-a-strong-community/setting-guidelines-for-repository-contributors)
-`LICENSE` | The license file for the project. | [Documentation](https://help.github.com/en/github/creating-cloning-and-archiving-repositories/licensing-a-repository)
-`README.md` | The file you are reading now, should contain info about the integration, installation and configuration instructions. | [Documentation](https://help.github.com/en/github/writing-on-github/basic-writing-and-formatting-syntax)
-`requirements.txt` | Python packages used for development/lint/testing this integration. | [Documentation](https://pip.pypa.io/en/stable/user_guide/#requirements-files)
+## Supported entity
 
-## How?
+Currently (HA core v2024.6.0) all entities already supported by official component are supported:
+- binary_sensor
+- climate
+- cover
+- fan
+- light
+- sensor
+- switch
 
-1. Create a new repository in GitHub, using this repository as a template by clicking the "Use this template" button in the GitHub UI.
-1. Open your new repository in Visual Studio Code devcontainer (Preferably with the "`Dev Containers: Clone Repository in Named Container Volume...`" option).
-1. Rename all instances of the `integration_blueprint` to `custom_components/<your_integration_domain>` (e.g. `custom_components/awesome_integration`).
-1. Rename all instances of the `Integration Blueprint` to `<Your Integration Name>` (e.g. `Awesome Integration`).
-1. Run the `scripts/develop` to start HA and test out your new integration.
+## Prerequisites
 
-## Next steps
+* [Home Assistant (hass)](https://www.home-assistant.io/) >= 2022.0.
+* [pymodbus](https://github.com/pymodbus-dev/pymodbus) == 3.6.8 will load automatically.
 
-These are some next steps you may want to look into:
-- Add tests to your integration, [`pytest-homeassistant-custom-component`](https://github.com/MatthewFlamm/pytest-homeassistant-custom-component) can help you get started.
-- Add brand images (logo/icon) to https://github.com/home-assistant/brands.
-- Create your first release.
-- Share your integration on the [Home Assistant Forum](https://community.home-assistant.io/).
-- Submit your integration to [HACS](https://hacs.xyz/docs/publish/start).
+## Installation
+
+> **Note**
+> This integration requires [HACS](https://hacs.xyz/docs/setup/download/) to be installed
+
+1. Open HACS
+2. Open the options in the top right and select _Custom repositories_
+3. Enter this repository's URL (`https://github.com/AndyGybels/modbus-pulse`) under the Category _Integration_.
+4. Press _Add_
+5. _+ EXPLORE & DOWNLOAD REPOSITORIES_
+6. Find _Modbus Pulse_ in this list
+7. _DOWNLOAD THIS REPOSITORY WITH HACS_
+8. _DOWNLOAD_
+9. Restart Home Assistant (_Settings_ > _System_ >  _RESTART_)
+
+## Configuration
+
+modbus_logo is configured in the `configuration.yaml` file under the *modbus_logo* domain.
+Configuration is the same as the integrated modbus integration so see the modbus integration documentation for more information:
+https://www.home-assistant.io/integrations/modbus/
+
+If you have already the modbus component configured, to switch to modbus_plc is enough to rename the key in your configuration file from *modbus* to *modbus_plc*
+
+
+## Opening an issue
+
+Please open issue, only in case of issues related to extension in this repository
+

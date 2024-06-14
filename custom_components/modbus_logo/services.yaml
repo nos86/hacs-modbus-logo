@@ -1,0 +1,91 @@
+reload:
+write_coil:
+  name: "Write Coil"
+  description: "Write a boolean value to a coil"
+  fields:
+    address:
+      name: "Address"
+      description: "The address of the coil to write to"
+      required: true
+      selector:
+        number:
+          min: 0
+          max: 65535
+    state:
+      name: "Value"
+      description: "The value to write to the coil"
+      required: true
+      example: "0 or [1,0]"
+      selector:
+        object:
+    slave:
+      name: "Slave"
+      description: "The PLC slave number (Used in Modbus RTU) default is 1"
+      required: false
+      selector:
+        number:
+          min: 1
+          max: 255
+    hub:
+      name: "Hub"
+      description: "The hub to use"
+      example: "hub1"
+      default: "modbus_hub"
+      selector:
+        text:
+write_register:
+  name: "Write Register"
+  description: "Write a value to a register"
+  fields:
+    address:
+      name: "Address"
+      description: "The address of the register to write to"
+      required: true
+      selector:
+        number:
+          min: 0
+          max: 65535
+    slave:
+      name: "Slave"
+      description: "The PLC slave number (Used in Modbus RTU) default is 1"
+      required: false
+      selector:
+        number:
+          min: 1
+          max: 255
+    value:
+      name: "Value"
+      description: "The value to write to the coil"
+      required: true
+      example: "0 or [4,0]"
+      selector:
+        object:
+    hub:
+      name: "Hub"
+      description: "The hub to use"
+      example: "hub1"
+      default: "modbus_hub"
+      selector:
+        text:
+stop:
+  name: "Stop Communication"
+  description: "Stop the communication on modbus layer"
+  fields:
+    hub:
+      name: "Hub"
+      description: "The hub to use"
+      example: "hub1"
+      default: "modbus_hub"
+      selector:
+        text:
+restart:
+  name: "Restart Communication"
+  description: "Restart the communication. It shall be invoked after STOP. It will not apply changes in configuration. For that, you need to restart Home Assistant"
+  fields:
+    hub:
+      name: "Hub"
+      description: "The hub to use"
+      example: "hub1"
+      default: "modbus_hub"
+      selector:
+        text:

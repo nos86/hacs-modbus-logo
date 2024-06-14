@@ -53,7 +53,7 @@ RunEntry = namedtuple("RunEntry", "attr func")  # noqa: PYI024
 PB_CALL = []
 
 
-async def async_modbus_setup(
+async def async_modbus_setup(  # noqa: PLR0915
     hass: HomeAssistant,
     config: ConfigType,
 ) -> bool:
