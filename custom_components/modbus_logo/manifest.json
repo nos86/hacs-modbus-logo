@@ -1,0 +1,12 @@
+{
+  "domain": "modbus_logo",
+  "name": "Modbus for Logo!8",
+  "codeowners": [
+    "@nos86"
+  ],
+  "config_flow": true,
+  "documentation": "https://github.com/nos86/hacs-modbus-logo",
+  "iot_class": "local_polling",
+  "issue_tracker": "https://github.com/nos86/hacs-modbus-logo/issues",
+  "version": "0.0.0"
+}
