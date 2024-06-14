@@ -1,15 +1,15 @@
 {
-  "domain": "modbus_logo",
-  "name": "Modbus for Logo!8",
   "codeowners": [
     "@nos86"
   ],
-  "config_flow": true,
+  "config_flow": false,
+  "domain": "modbus_logo",
   "documentation": "https://github.com/nos86/hacs-modbus-logo",
   "iot_class": "local_polling",
   "issue_tracker": "https://github.com/nos86/hacs-modbus-logo/issues",
-  "version": "0.1.0",
+  "name": "Modbus for Logo!8",
   "requirements": [
     "pymodbus==3.6.8"
-  ]
+  ],
+  "version": "0.1.0"
 }
