@@ -15,6 +15,3 @@ fi
 ## while at the same time have Home Assistant configuration inside <root>/config
 ## without resulting to symlinks.
 export PYTHONPATH="${PYTHONPATH}:${PWD}/custom_components"
-
-# Start Home Assistant
-hass --config "${PWD}/config" --debug
