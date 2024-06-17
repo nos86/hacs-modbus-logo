@@ -1,6 +1,19 @@
-[![hacs_badge](https://img.shields.io/badge/HACS-Custom-41BDF5.svg)](https://github.com/hacs/integration)
+
 
 # Home Assistant Custom Integration: modbus_logo
+
+[![hacs_badge](https://img.shields.io/badge/HACS-Custom-41BDF5.svg)](https://github.com/hacs/integration)
+[![GitHub Release][releases-shield]][releases]
+[![GitHub Activity][commits-shield]][commits]
+[![License][license-shield]](LICENSE)
+
+![Project Maintenance][maintenance-shield]
+[![BuyMeCoffee][buymecoffeebadge]][buymecoffee]
+
+[![Discord][discord-shield]][discord]
+[![Community Forum][forum-shield]][forum]
+
+_Integration to integrate with [integration_blueprint][integration_blueprint]._
 
 [modbus](http://www.modbus.org/) is a communication protocol to control PLCs (Programmable Logic Controller) and RTUs (Remote Terminal Unit).
 
@@ -27,8 +40,9 @@ Currently (HA core v2024.6.0) all entities already supported by official compone
 
 ## Prerequisites
 
-* [Home Assistant (hass)](https://www.home-assistant.io/) >= 2022.0.
+* [Home Assistant (hass)](https://www.home-assistant.io/) >= 2024.6
 * [pymodbus](https://github.com/pymodbus-dev/pymodbus) == 3.6.8 will load automatically.
+* [HACS](https://hacs.xyz/docs/setup/download/)
 
 ## Installation
 
@@ -37,7 +51,7 @@ Currently (HA core v2024.6.0) all entities already supported by official compone
 
 1. Open HACS
 2. Open the options in the top right and select _Custom repositories_
-3. Enter this repository's URL (`https://github.com/AndyGybels/modbus-pulse`) under the Category _Integration_.
+3. Enter this repository's URL (`https://github.com/nos86/hacs-modbus-logo`) under the Category _Integration_.
 4. Press _Add_
 5. _+ EXPLORE & DOWNLOAD REPOSITORIES_
 6. Find _Modbus Pulse_ in this list
@@ -57,4 +71,8 @@ If you have already the modbus component configured, to switch to modbus_plc is 
 ## Opening an issue
 
 Please open issue, only in case of issues related to extension in this repository
+
+## Contributions are welcome!
+
+If you want to contribute to this please read the [Contribution guidelines](CONTRIBUTING.md)
 
