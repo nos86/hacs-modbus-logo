@@ -2,12 +2,13 @@
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 
-from homeassistant.components.modbus.light import ModbusLight
+from homeassistant.components.light import ColorMode, LightEntity
 from homeassistant.const import CONF_LIGHTS, CONF_NAME
 
 from . import get_hub
+from .base_platform import BaseSwitch
 
 if TYPE_CHECKING:
     from homeassistant.core import HomeAssistant
@@ -17,6 +18,17 @@ if TYPE_CHECKING:
     from .modbus import ModbusHub
 
 PARALLEL_UPDATES = 1
+
+
+class ModbusLight(BaseSwitch, LightEntity):
+    """Class representing a Modbus light."""
+
+    _attr_color_mode = ColorMode.ONOFF
+    _attr_supported_color_modes = {ColorMode.ONOFF}  # noqa: RUF012
+
+    async def async_turn_on(self, **kwargs: Any) -> None:
+        """Set light on."""
+        await self.async_turn(self.command_on, **kwargs)
 
 
 async def async_setup_platform(
