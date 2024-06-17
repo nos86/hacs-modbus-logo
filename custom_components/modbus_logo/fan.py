@@ -2,13 +2,14 @@
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 
+from homeassistant.components.fan import FanEntity
 from homeassistant.components.modbus.const import CONF_FANS
-from homeassistant.components.modbus.fan import ModbusFan
 from homeassistant.const import CONF_NAME
 
 from . import get_hub
+from .base_platform import BaseSwitch
 
 if TYPE_CHECKING:
     from homeassistant.core import HomeAssistant
@@ -18,6 +19,28 @@ if TYPE_CHECKING:
     from .modbus import ModbusHub
 
 PARALLEL_UPDATES = 1
+
+
+class ModbusFan(BaseSwitch, FanEntity):
+    """Class representing a Modbus fan."""
+
+    async def async_turn_on(
+        self,
+        percentage: int | None = None,  # noqa: ARG002
+        preset_mode: str | None = None,  # noqa: ARG002
+        **kwargs: Any,  # noqa: ARG002
+    ) -> None:
+        """Set fan on."""
+        await self.async_turn(self.command_on)
+
+    @property
+    def is_on(self) -> bool | None:
+        """
+        Return true if fan is on.
+
+        This is needed due to the ongoing conversion of fan.
+        """
+        return self._attr_is_on
 
 
 async def async_setup_platform(
