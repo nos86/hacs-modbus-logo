@@ -2,12 +2,13 @@
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 
-from homeassistant.components.modbus.switch import ModbusSwitch
+from homeassistant.components.switch import SwitchEntity
 from homeassistant.const import CONF_NAME, CONF_SWITCHES
 
 from . import get_hub
+from .base_platform import BaseSwitch
 
 if TYPE_CHECKING:
     from homeassistant.core import HomeAssistant
@@ -17,6 +18,14 @@ if TYPE_CHECKING:
     from .modbus import ModbusHub
 
 PARALLEL_UPDATES = 1
+
+
+class ModbusSwitch(BaseSwitch, SwitchEntity):
+    """Base class representing a Modbus switch."""
+
+    async def async_turn_on(self, **kwargs: Any) -> None:
+        """Set switch on."""
+        await self.async_turn(self.command_on, **kwargs)
 
 
 async def async_setup_platform(
