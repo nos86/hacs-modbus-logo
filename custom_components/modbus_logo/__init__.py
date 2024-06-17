@@ -56,7 +56,7 @@ from homeassistant.const import (
     CONF_TYPE,
 )
 
-from .const import DOMAIN
+from .const import CONF_SYNC, DOMAIN
 from .modbus import async_modbus_setup
 
 if TYPE_CHECKING:
@@ -65,9 +65,31 @@ if TYPE_CHECKING:
 
 _LOGGER = logging.getLogger(__name__)
 
-SWITCH_SCHEMA = mb_component.SWITCH_SCHEMA.extend({})
-LIGHT_SCHEMA = mb_component.LIGHT_SCHEMA.extend({})
-FAN_SCHEMA = mb_component.FAN_SCHEMA.extend({})
+verify_extended = {
+    vol.Optional(CONF_VERIFY): vol.Maybe(
+        {
+            vol.Optional(CONF_ADDRESS): cv.positive_int,
+            vol.Optional(CONF_INPUT_TYPE): vol.In(
+                [
+                    CALL_TYPE_REGISTER_HOLDING,
+                    CALL_TYPE_DISCRETE,
+                    CALL_TYPE_REGISTER_INPUT,
+                    CALL_TYPE_COIL,
+                    CALL_TYPE_X_COILS,
+                    CALL_TYPE_X_REGISTER_HOLDINGS,
+                ]
+            ),
+            vol.Optional(CONF_STATE_OFF): cv.positive_int,
+            vol.Optional(CONF_STATE_ON): cv.positive_int,
+            vol.Optional(CONF_DELAY, default=0): cv.positive_int,
+            vol.Optional(CONF_SYNC, default=False): cv.boolean,
+        }
+    )
+}
+
+SWITCH_SCHEMA = mb_component.SWITCH_SCHEMA.extend(verify_extended)
+LIGHT_SCHEMA = mb_component.LIGHT_SCHEMA.extend(verify_extended)
+FAN_SCHEMA = mb_component.FAN_SCHEMA.extend(verify_extended)
 
 MODBUS_SCHEMA = vol.Schema(
     {
