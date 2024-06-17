@@ -2,16 +2,10 @@
 
 # Home Assistant Custom Integration: modbus_logo
 
-[![hacs_badge](https://img.shields.io/badge/HACS-Custom-41BDF5.svg)](https://github.com/hacs/integration)
-[![GitHub Release][releases-shield]][releases]
-[![GitHub Activity][commits-shield]][commits]
-[![License][license-shield]](LICENSE)
-
-![Project Maintenance][maintenance-shield]
-[![BuyMeCoffee][buymecoffeebadge]][buymecoffee]
-
-[![Discord][discord-shield]][discord]
-[![Community Forum][forum-shield]][forum]
+![hacs_badge](https://img.shields.io/badge/HACS-Custom-41BDF5.svg)
+![GitHub Release](https://img.shields.io/github/v/release/nos86/hacs-modbus-logo)
+![GitHub commit activity](https://img.shields.io/github/commit-activity/t/nos86/hacs-modbus-logo)
+![GitHub License](https://img.shields.io/github/license/nos86/hacs-modbus-logo)
 
 _Integration to integrate with [integration_blueprint][integration_blueprint]._
 
@@ -67,6 +61,47 @@ https://www.home-assistant.io/integrations/modbus/
 
 If you have already the modbus component configured, to switch to modbus_plc is enough to rename the key in your configuration file from *modbus* to *modbus_plc*
 
+### Enhanced switch / fan / light
+with v0.2.0, a new flag has been added inside verify section: **sync**. This flag is False by default. This flag is available for: _SWITCH, LIGHT, FAN_
+
+When it is activated, it forces the same status between Home Assistant and PLC input.
+This solves the issue that happens when output state in PLC changes and Home Assistant updates the UI state disaligning it from PLC Network input state.
+
+What this is, just, send back the new state to PLC as soon as an internal update event is triggered inside Home Assistant.
+The command sent to PLC is the same when you command a turn_on or a turn_off
+
+**WARNING**: please, pay attention to unwanted loop (where HA updates PLC, PLC reacts changing its status, and this trigger again HA....).
+Use this setting, only if you know what you are doing.
+
+Finally below a short example of configuration that uses this flag:
+```yaml
+modbus_logo:
+# I1-24      -->    0 -   23 (input)
+# Q1-20      --> 8192 - 8211 (coil)
+# M1-64      --> 8256 - 8319 (coil)
+# V0.0-850.7 -->    0 - 6807 (coil)
+# AI 1-8     -->    0 -    7
+# VW 0-850   -->    0 -  424
+# AQ 1-8     -->  512 -  519
+# AM 1-64    -->  528 -  591
+  - name: plc
+    type: tcp
+    host: 10.148.0.32
+    port: 502
+    lights:
+      - name: corridor
+        address: 16 #V2.0
+        write_type: coil
+        scan_interval: 1
+        verify:
+          input_type: coil
+          address: 8192 #Q1
+          sync: true # <-- this is the new flag
+```
+In this example, the switch in Home Assistant sets the network input (V2.0), then PLC logic will apply a certain logic that has as effect that output Q1 will be set. Then, HA will "verify" that actually Q1 is set to confirm the state of the UI Switch. Later, if Q1 changes (for example, because I used the wall switch to command the light), HA will "verify" the new state (according to _scan_interval_ time) and update the UI switch accordly. At this moment, the new UI state will be sent to network input V2.0 of PLC and it will be set to zero. Same story, if the light is off and I switch it on from wall switch.
+
+To complete the example, below is reported the logic used in the PLC: (in this example, it is supped that physical device is a **button**)
+![alt text](logo_example.png)
 
 ## Opening an issue
 
