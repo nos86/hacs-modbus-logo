@@ -24,6 +24,6 @@ jobs:
           zip modbus_logo.zip -r ./
 
       - name: "Upload the ZIP file to the release"
-        uses: "softprops/action-gh-release@v2.0.5"
+        uses: "softprops/action-gh-release@v2.0.8"
         with:
           files: ${{ github.workspace }}/custom_components/modbus_logo/modbus_logo.zip
