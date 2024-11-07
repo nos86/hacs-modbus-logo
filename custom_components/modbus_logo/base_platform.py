@@ -4,7 +4,10 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
-import homeassistant.components.modbus.base_platform as base
+try:
+    import homeassistant.components.modbus.base_platform as base
+except ModuleNotFoundError:
+    import homeassistant.components.modbus.entity as base
 from homeassistant.components.modbus.const import CONF_VERIFY
 
 from .const import CONF_SYNC
