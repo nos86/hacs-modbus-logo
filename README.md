@@ -21,7 +21,7 @@ Continuing in the reading of this file you'll find the documentation for the add
 
 ## Supported entity
 
-Currently (HA core v2024.6.0) all entities already supported by official component are supported:
+Currently (HA core v2024.11.0) all entities already supported by official component are supported:
 
 - binary_sensor
 - climate
@@ -33,7 +33,7 @@ Currently (HA core v2024.6.0) all entities already supported by official compone
 
 ## Prerequisites
 
-- [Home Assistant (hass)](https://www.home-assistant.io/) >= 2024.6
+- [Home Assistant (hass)](https://www.home-assistant.io/) >= 2024.11
 - [pymodbus](https://github.com/pymodbus-dev/pymodbus) == 3.6.8 will load automatically.
 - [HACS](https://hacs.xyz/docs/setup/download/)
 
