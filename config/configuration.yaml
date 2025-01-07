@@ -11,6 +11,13 @@ logger:
   logs:
     custom_components.modbus_logo: debug
 
-debugpy:
-  start: true
-  wait: true
+modbus_logo:
+  - name: plc
+    type: tcp
+    host: 127.0.0.1
+    port: 502
+    lights:
+      - name: test
+        address: 1
+        write_type: coil
+
